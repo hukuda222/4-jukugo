@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "4-jukugo"
+version = "0.1.0"
+description = ""
+authors = []
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pytorch-lightning = "^1.7.6"
+transformers = "^4.22.1"
+hydra-core = "^1.2.0"
+datasets = "^2.4.0"
+nltk = "^3.7"
+lightning-transformers = {git = "https://github.com/PytorchLightning/lightning-transformers.git", rev = "master"}
+torch = {url = "https://download.pytorch.org/whl/cu116/torch-1.12.1%2Bcu116-cp39-cp39-linux_x86_64.whl"}
+Scrapy = "^2.6.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
