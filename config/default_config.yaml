@@ -1,5 +1,4 @@
 defaults:
-  - model: model
   - data: default_data
   - trainer: default_trainer
 

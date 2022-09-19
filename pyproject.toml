@@ -14,6 +14,7 @@ nltk = "^3.7"
 lightning-transformers = {git = "https://github.com/PytorchLightning/lightning-transformers.git", rev = "master"}
 torch = {url = "https://download.pytorch.org/whl/cu116/torch-1.12.1%2Bcu116-cp39-cp39-linux_x86_64.whl"}
 Scrapy = "^2.6.2"
+accelerate = "^0.12.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
