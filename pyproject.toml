@@ -5,7 +5,7 @@ description = ""
 authors = []
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.9.9"
 pytorch-lightning = "^1.7.6"
 transformers = "^4.22.1"
 hydra-core = "^1.2.0"
@@ -15,6 +15,8 @@ lightning-transformers = {git = "https://github.com/PytorchLightning/lightning-t
 torch = {url = "https://download.pytorch.org/whl/cu116/torch-1.12.1%2Bcu116-cp39-cp39-linux_x86_64.whl"}
 Scrapy = "^2.6.2"
 accelerate = "^0.12.0"
+streamlit = "^1.12.2"
+pandas = "^1.4.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

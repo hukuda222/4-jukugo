@@ -6,4 +6,4 @@ hydra:
   job:
     chdir: False
 
-model_checkpoint: "rinna/japanese-gpt2-medium"
+model_checkpoint: "rinna/japanese-gpt2-small"
