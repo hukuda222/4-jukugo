@@ -20,7 +20,7 @@ src="早く寝て早く起きること"
 input = tokenizer.encode(src, return_tensors="pt")
 output = model.generate(src, device=torch.device("cuda"),
                         output_attentions=True,return_dict_in_generate=True,max_new_tokens=4,
-                        bad_words_ids=[[bad_id] for bad_id in bad_ids if bad_id not in {0,2}],
+                        bad_words_ids=[[bad_id] for bad_id in bad_ids if bad_id not in {2}],
                         no_repeat_ngram_size=1)
 
 result=[]

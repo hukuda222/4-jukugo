@@ -5,13 +5,13 @@ from transformers import AutoTokenizer
 
 from lightning_transformers.task.nlp.language_modeling import LanguageModelingTransformer
 
-tokenizer=AutoTokenizer.from_pretrained("rinna/japanese-gpt2-medium")
+tokenizer=AutoTokenizer.from_pretrained("rinna/japanese-gpt2-small")
 
 model = LanguageModelingTransformer(
-    pretrained_model_name_or_path="rinna/japanese-gpt2-medium",
+    pretrained_model_name_or_path="rinna/japanese-gpt2-small",
     tokenizer=tokenizer
 )
-model = model.load_from_checkpoint("lightning_logs/version_3/checkpoints/epoch=9-step=1170.ckpt",
+model = model.load_from_checkpoint("lightning_logs/version_5/checkpoints/epoch=9-step=1170.ckpt",
                                    device_map="auto").to(torch.device("cpu"))
 
 bad_ids=pd.read_csv("dataset/not-kanji-ids.csv",header=None)[0]
@@ -24,7 +24,6 @@ def generate(src:str) -> str:
                         no_repeat_ngram_size=1)
     result=[]
     for i in range(len(output[0][0])-len(input[0])):
-        #print(i,output[0][0,len(input[0])+i])
         if output[0][0,len(input[0])+i]==2:
             continue
         if output[0][0,len(input[0])+i]==0:
@@ -32,7 +31,6 @@ def generate(src:str) -> str:
             attn_score[0]=0
             attn_score[len(input[0])-1:]=0
             result+=tokenizer.batch_decode(input[:,torch.argmax(attn_score)])
-            #print(tokenizer.batch_decode(input[:,torch.argmax(attn_score)]))
         else:
             result+=tokenizer.batch_decode(output[0][:,len(input[0])+i])
     return "".join(result)[:4]
