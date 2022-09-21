@@ -1,29 +1,30 @@
-import pytorch_lightning as pl
-from transformers import AutoTokenizer
-from datasets import load_dataset
+from typing import Union
+
+from transformers import PreTrainedTokenizerBase
+from lightning_transformers.task.nlp.language_modeling import (
+    LanguageModelingDataModule,
+)
 
 
-class DataModule(pl.LightningDataModule):
-    def __init__(self, cfg):
-        super().__init__()
-        self.max_length=cfg.max_length
-        self.tokenizer = AutoTokenizer.from_pretrained(cfg.model_checkpoint)
-        self.dataset = load_dataset("text", data_files={"train": "../dataset/train.txt", "validation": "../dataset/valid.txt"})
+class CustomLanguageModelingDataModule(LanguageModelingDataModule):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.max_length = kwargs["max_length"]
 
-    def _tokenize(self, x):
-        result = self.tokenizer(x["text"],max_length=56,padding='max_length',truncation=True)
-        result["labels"]=result["input_ids"].copy()
-        return result
+    def tokenize_function(
+        self,
+        examples,
+        tokenizer: Union[PreTrainedTokenizerBase],
+        text_column_name: str = None,
+    ):
+        return tokenizer(
+            examples[text_column_name],
+            max_length=self.max_length,
+            padding="max_length",
+            truncation=True,
+        )
 
-    def setup(self, stage=None):
-        self.lm_dataset = self.dataset.map(self._tokenize, batched=True, num_proc=4, remove_columns=["text"])
-
-    def train_dataloader(self):
-        return self.lm_dataset["train"]
-
-    def val_dataloader(self):
-        return self.lm_dataset["validation"]
-    
-    
-
-
+    @staticmethod
+    def convert_to_features(examples, block_size: int, **kwargs):
+        examples["labels"] = examples["input_ids"].copy()
+        return examples

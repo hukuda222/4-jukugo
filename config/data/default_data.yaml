@@ -1,3 +1,0 @@
-# @package _group_
-max_length: 56
-model_checkpoint: "rinna/japanese-gpt2-small"

@@ -6,24 +6,34 @@ from lightning_transformers.task.nlp.language_modeling import (
     LanguageModelingTransformer,
 )
 from transformers import AutoTokenizer
-from base.data import CustomLanguageModelingDataModule
+from factory.dataset import CustomLanguageModelingDataModule
 
 
 warnings.filterwarnings("ignore")
 
-@hydra.main(config_path='../config', config_name='default_config')
-def train(cfg: DictConfig) -> None:
-    
-    model = LanguageModelingTransformer(pretrained_model_name_or_path=cfg.model_checkpoint,
-                                        tokenizer=AutoTokenizer.from_pretrained(pretrained_model_name_or_path=cfg.model_checkpoint))
 
-    dm = CustomLanguageModelingDataModule(train_file= "dataset/train.csv",validation_file= "dataset/valid.csv",
-                                    tokenizer=AutoTokenizer.from_pretrained(pretrained_model_name_or_path=cfg.model_checkpoint))
-    
-    trainer = pl.Trainer(accelerator="auto", devices="auto", max_epochs=10)
+@hydra.main(config_path="../", config_name="config")
+def train(cfg: DictConfig) -> None:
+
+    model = LanguageModelingTransformer(
+        pretrained_model_name_or_path=cfg.model_checkpoint,
+        tokenizer=AutoTokenizer.from_pretrained(
+            pretrained_model_name_or_path=cfg.model_checkpoint
+        ),
+    )
+
+    dm = CustomLanguageModelingDataModule(
+        train_file=cfg.train_path,
+        validation_file=cfg.valid_path,
+        tokenizer=AutoTokenizer.from_pretrained(
+            pretrained_model_name_or_path=cfg.model_checkpoint
+        ),
+        max_length=cfg.max_length,
+    )
+
+    trainer = pl.Trainer(accelerator="auto", devices="auto", max_epochs=cfg.max_epoch)
     trainer.fit(model, dm)
 
-    
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     train()

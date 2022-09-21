@@ -1,9 +1,0 @@
-defaults:
-  - data: default_data
-  - trainer: default_trainer
-
-hydra:
-  job:
-    chdir: False
-
-model_checkpoint: "rinna/japanese-gpt2-small"

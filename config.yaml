@@ -1,0 +1,9 @@
+hydra:
+  job:
+    chdir: False
+
+model_checkpoint: "rinna/japanese-gpt2-small"
+max_length: 56
+train_path: "dataset/train.csv"
+valid_path: "dataset/valid.csv"
+max_epoch: 10
